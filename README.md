@@ -47,7 +47,7 @@ We have ignored the null values and kept them as it is as
 We have taken the customer_review columns to gain the idea about number of customers ,considering similar customer behavior for reviews accross all region.
 
 
-# Pyhton libraries used- Numpy ,Pandas ,Matplotlib,Seaborn
+###Pyhton libraries used- Numpy ,Pandas ,Matplotlib,Seaborn
 
 # Hidden trends and pattern Found
 
