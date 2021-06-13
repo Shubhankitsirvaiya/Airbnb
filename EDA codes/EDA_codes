@@ -1,0 +1,30 @@
+
+df.info()
+
+def minimum_night_cat(x):
+  if x==1:
+    return '......only one day'
+  if x>1 and x<=3:
+    return '.....2/3 days'
+  if x>3 and x<7:
+    return '....few days'
+  elif x==7:
+    return '...3.week'
+  elif x>7 and x<=29:
+    return '.less than 1 month'
+  elif x==30:
+    return '1 month'
+  elif x>30 and x<180:
+    return 'More than a month'
+  elif x>=180 and x<=365:
+    return 'More. than half year'
+  elif x>365:
+    return 'more than a year'
+df['minimum_night_cat']=df['minimum_nights'].apply(minimum_night_cat)
+
+plt.figure(figsize=(20,7))
+corr_=df.corr()
+sns.heatmap(corr_,annot=True)
+
+df['last_review'] = pd.to_datetime(df['last_review'], format='%Y-%m-%d')
+
