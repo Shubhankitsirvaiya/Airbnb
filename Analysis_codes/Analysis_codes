@@ -1,0 +1,248 @@
+###Property count in each neighbourhood group
+and its plotting
+
+property_count=df['neighbourhood_group'].value_counts().reset_index()
+w=0.5
+ 
+plt.figure(figsize=(10,6))
+
+bar1=np.arange(5)
+plt.bar(bar1,property_count['neighbourhood_group'],w,color='rgbkymc')
+plt.xlabel('neighbourhood_group',size=15)
+plt.ylabel('count',size=15)
+plt.title('',size=20)
+plt.xticks(bar1,property_count['index'])
+plt.legend()
+
+ 
+plt.show()
+
+###Review count in each neighbourhood group
+and its plotting
+review=df.groupby('neighbourhood_group')['number_of_reviews'].sum().reset_index()
+w=0.5
+ 
+
+plt.figure(figsize=(10,6))
+
+bar1=np.arange(5)
+plt.bar(bar1,review['number_of_reviews'],w,color='rgbkymc')
+plt.xlabel('neighbourhood_group',size=15)
+plt.ylabel('count',size=15)
+plt.title('',size=20)
+plt.xticks(bar1,review['neighbourhood_group'])
+plt.legend()
+
+ 
+plt.show()
+
+
+###Month analysis
+
+df['last_month']=df['last_review'].apply(lambda x: x.month)
+pd.DataFrame(df.groupby('last_month')['host_id'].count()).rename({'host_id':'count'},axis=1).plot.bar()
+
+###comparasion for brooklyn and manhatten
+pd.DataFrame(df.groupby('neighbourhood_group')['number_of_reviews'].sum().sort_values(ascending=False)).rename({'number_of_reviews':'count'},axis=1).plot.bar()
+ So brooklyl and Manhateten has most number of customers 
+
+pd.DataFrame(df.groupby('neighbourhood_group')['price'].mean().sort_values(ascending=False)).rename({'price':'count'},axis=1).plot.bar()
+
+pd.DataFrame(df.groupby('neighbourhood_group')['host_id'].count().sort_values(ascending=False)).rename({'host_id':'count'},axis=1).plot.bar()
+
+###room type analysis and plots
+
+a=df.groupby('neighbourhood_group')['room_type'].value_counts().unstack()
+
+plt.figure(figsize=(10,7))
+w=0.2           
+
+
+bar1=np.arange(5)
+bar2=[w+i for i in bar1]
+bar3=[w+i for i in bar2]
+plt.bar(bar1,list(a['Entire home/apt']),w,label='Entire home/apt')
+plt.bar(bar2,list(a['Private room']),w,label='Private room')
+plt.bar(bar3,list(a['Shared room']),w,label='Shared room')
+              
+plt.xlabel('neighbourhood_group',size=15)
+plt.ylabel('count',size=15)
+plt.title('',size=20)
+plt.xticks(bar1+2*w/2,a.index)
+plt.legend()
+              
+plt.show()
+
+
+###price analysis for groups
+
+a=df.groupby(['neighbourhood_group','room_type'])['price'].mean().unstack()
+
+plt.figure(figsize=(10,7))
+w=0.2           
+
+
+bar1=np.arange(5)
+bar2=[w+i for i in bar1]
+bar3=[w+i for i in bar2]
+plt.bar(bar1,list(a['Entire home/apt']),w,label='Entire home/apt')
+plt.bar(bar2,list(a['Private room']),w,label='Private room')
+plt.bar(bar3,list(a['Shared room']),w,label='Shared room')
+              
+plt.xlabel('neighbourhood_group',size=10)
+plt.ylabel('price',size=10)
+plt.title('',size=20)
+plt.xticks(bar1+2*w/2,a.index,rotation=90,fontsize=15)
+plt.legend()
+              
+plt.show()
+##following graph shows which room type has more price in specific neighbourhood groups.
+
+
+###functions to make subset and thier plots
+
+
+def neighbourhood_group_subset(n):
+  data=df[df['neighbourhood_group']==n]
+  a=df[df['neighbourhood_group']==n]['neighbourhood'].value_counts().reset_index()
+  a1=data[data['neighbourhood']==a['index'][0]]
+  a2=data[data['neighbourhood']==a['index'][1]]
+  a3=data[data['neighbourhood']==a['index'][2]]
+  a4=data[data['neighbourhood']==a['index'][3]]
+  a5=data[data['neighbourhood']==a['index'][4]]
+  result=pd.concat([a1,a2,a3,a4,a5])
+  return result
+
+we can use this function to make a subset of dataframe based on different neighbourhood groups
+def room(room_types,neighbourhood_groups):
+  a=neighbourhood_group_subset(neighbourhood_groups)
+  return a[a['room_type']==room_types]
+
+this function can be used to slice the dataframe based on room type and neighbourhood group
+
+
+
+
+now we can add a one time function to plot the graph when we want to do neighboir hoood wise analysis
+
+
+def plots(aa,var):       
+          w = 0.20
+          #plt.figsize(figure=(20,10))
+          plt.figure(figsize=(10,7))
+          
+
+
+          bar1=np.arange(aa['neighbourhood'].shape[0])
+          bar2=[w+i for i in bar1]
+          bar3=[w+i for i in bar2]
+          plt.bar(bar1,aa[var+'1'],w,label='private_room')
+          plt.bar(bar2,aa[var+'2'],w,label="entire_room")
+          plt.bar(bar3,aa[var +'3'],w,label="sheared_room")
+
+          plt.xlabel('neighbourhood',size=10)
+          plt.ylabel(var,size=10)
+          plt.title('variation of  ' + var+'   wrt neighbourhood',size=20)
+          plt.xticks(bar1+2*w/2,aa['neighbourhood'],fontsize=10)
+          plt.legend()
+          #plt.xticks(rotation=90)
+          plt.show()
+          #ptl.xticks(bar1+w/2,df['month_number'])
+
+
+private_room_df=room('Private room','Brooklyn')
+entire_home_df=room('Entire home/apt','Brooklyn')
+shared_room_df=room('Shared room','Brooklyn')
+
+a=private_room_df.groupby('neighbourhood')['price'].mean().reset_index().rename({'price': 'price1'}, axis=1)
+b=entire_home_df.groupby('neighbourhood')['price'].mean().reset_index().rename({'price': 'price2'}, axis=1)
+c=shared_room_df.groupby('neighbourhood')['price'].mean().reset_index().rename({'price': 'price3'}, axis=1)
+
+
+###looking for specific neighbourhood in Broklyn ,in each room type 
+
+for example in a we will have Dataframe which give us the mean price in each neighbourhood group in brooklyn for private room type.
+a.head()
+
+
+final=pd.concat([a.set_index('neighbourhood'),b.set_index('neighbourhood'),c.set_index('neighbourhood')], axis=1, join='outer').reset_index().fillna(0).rename({'index':'neighbourhood'},axis=1)
+#final=pd.merge(c,final,on='neighbourhood')
+plots(final,var='price')
+
+a=private_room_df.groupby('neighbourhood')['number_of_reviews'].mean().reset_index().rename({'number_of_reviews': 'number_of_reviews1'}, axis=1)
+b=entire_home_df.groupby('neighbourhood')['number_of_reviews'].mean().reset_index().rename({'number_of_reviews': 'number_of_reviews2'}, axis=1)
+c=shared_room_df.groupby('neighbourhood')['number_of_reviews'].mean().reset_index().rename({'number_of_reviews': 'number_of_reviews3'}, axis=1)
+
+
+final=pd.concat([a.set_index('neighbourhood'),b.set_index('neighbourhood'),c.set_index('neighbourhood')], axis=1, join='outer').reset_index().fillna(0).rename({'index':'neighbourhood'},axis=1)
+#final=pd.merge(c,final,on='neighbourhood')
+plots(final,var='number_of_reviews')
+
+###price and room type wise counts and plots 
+
+count_df=df.groupby(['neighbourhood_group',pd.cut(df.price,bins)])['room_type'].value_counts().unstack().fillna(0).reset_index()
+count_df
+
+def get_plot(ngh_grp,a=count_df):
+  
+            data=a[a['neighbourhood_group']==ngh_grp]
+            w=0.15
+            plt.figure(figsize=(10,5))
+            bar1=np.arange(data['Entire home/apt'].shape[0])
+            bar2=[w+i for i in bar1]
+            bar3=[w+i for i in bar2]
+            plt.bar(bar1,data['Entire home/apt'],w,label='Entire home/apt')
+            plt.bar(bar2,data['Private room'],w,label='Private room')
+            plt.bar(bar3,data['Shared room'],w,label='Shared room')
+                          
+            plt.xlabel('price',size=10)
+            plt.ylabel('count',size=10)
+            plt.title(ngh_grp,size=20)
+            plt.xticks(bar1+2*w/2,['low price range(0, 80]','Medium pricerange(80, 200]','Expensive above 200'],fontsize=10)
+            plt.legend()
+                          
+            plt.show()
+                          
+
+
+def get_plot(ngh_grp,a=count_df):
+  
+            data=a[a['neighbourhood_group']==ngh_grp]
+            w=0.15
+            plt.figure(figsize=(10,5))
+            bar1=np.arange(data['Entire home/apt'].shape[0])
+            bar2=[w+i for i in bar1]
+            bar3=[w+i for i in bar2]
+            plt.bar(bar1,data['Entire home/apt'],w,label='Entire home/apt')
+            plt.bar(bar2,data['Private room'],w,label='Private room')
+            plt.bar(bar3,data['Shared room'],w,label='Shared room')
+                          
+            plt.xlabel('price',size=10)
+            plt.ylabel('count',size=10)
+            plt.title(ngh_grp,size=20)
+            plt.xticks(bar1+2*w/2,['low price range(0, 80]','Medium pricerange(80, 200]','Expensive above 200'],fontsize=10)
+            plt.legend()
+                          
+            plt.show()
+
+###for availablity analysis and markeitng suggestions
+
+new_props = df.groupby(['neighbourhood_group','neighbourhood']).agg({'availability_365':'median','host_id':'count'}).reset_index().sort_values(by=['availability_365'])
+new_props = new_props[new_props['host_id']>=5]
+new_props.head(20)
+
+new_props = df.groupby(['neighbourhood_group','neighbourhood','room_type']).agg({'availability_365':'median','host_id':'count','price':'median'}).reset_index().sort_values(by=['availability_365'])
+new_props = new_props[new_props['host_id']>=5]
+new_props.head(20)
+
+marketing_df = df.groupby(['neighbourhood_group','neighbourhood']).agg({'availability_365':'median','host_id':'count'}).reset_index().sort_values(by=['availability_365'],ascending=False)
+marketing_df = marketing_df[marketing_df['host_name']>=5]
+marketing_df.head(20)
+
+marketing_df = df.groupby(['neighbourhood_group','neighbourhood','room_type']).agg({'availability_365':'median','host_name':'count','price':'median'}).reset_index().sort_values(by=['availability_365'],ascending=False)
+marketing_df = marketing_df[marketing_df['host_name']>=5]
+marketing_df.head(20)
+
+
+                          
+          
