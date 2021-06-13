@@ -70,4 +70,6 @@ here for plotting and slicing we have made a function so as to not repeat the pr
 --Marketing + Discounts (People can travel extra to stay here).
 
 
-For more details, please see comments in code. If you want to use this code in your lab but need help, please contact the authors (rkantor - at - berkeley.edu).
+For more details, please see comments in code. If you want to use this code in your lab but need help ,please feel free to comment on this file and on colab notebook.
+
+Thanks for Reading me!!!
