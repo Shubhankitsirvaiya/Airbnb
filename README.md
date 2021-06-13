@@ -17,7 +17,7 @@ host_name- Name of the host , Names may be similar for two hosts.
 
 neighbourhood_group-  have 5 different regions of New York
 
-neighbourhood-   these are the subregions of neighbourhood_group , where one neighbourhood belongs to only one neighbourhood group.
+neighbourhood-   these are the sub-regions of neighbourhood_group , where one neighbourhood belongs to only one neighbourhood group.
 
 Latitude-  contains the coordinates of Latitude for that location.
 
@@ -41,8 +41,8 @@ availability_365-  Number of days each property is available out of 365 days of 
 
 
 ### Assumptions-
-We have ignored the null values and kept them as it is as 
--null values are present in only two columns, reviews columns
+We have ignored the null values and kept them as it is as for last_review column,and for number of reviews we have taken it as 0
+-null values are present in only two columns, number of review columns and last_review
 -null values does not affect our code here much.
 We have taken the customer_review columns to gain the idea about number of customers ,considering similar customer behavior for reviews accross all region.
 
@@ -68,11 +68,11 @@ review=df.groupby('neighbourhood_group')['number_of_reviews'].sum().reset_index(
 
 --Count of number of Properties in each type of room across different groups.
 
---comparasion mean price for manhatten and Brooklyn ,and why price is high in manhatten despite similar demand and suppply.
+--comparing mean price for manhatten and Brooklyn ,and why price is high in manhatten despite similar demand and suppply.
 
 --Mean price for each type of room across different neighbourhood groups.
 
---We can Look into each Nieghbourhood Groups seperately to look deeper into subset Neighbours(top 5 on the basis of most number of host present)
+--We can Look into each Nieghbourhood Groups seperately to look deeper into subset Neighbours(top 5 on the basis of most number of host present),
 here for plotting and slicing we have made a function so as to not repeat the process 5 times.
 
 
@@ -85,6 +85,6 @@ here for plotting and slicing we have made a function so as to not repeat the pr
 --Marketing + Discounts (People can travel extra to stay here).
 
 
-For more details, please see comments in code. If you want to use this code in your lab but need help ,please feel free to comment on this file and on colab notebook.
+For more details, please see comments in code and refer the colab notebook 'Complete Colab notebook'. If you want to use this code in your lab but need help ,please feel free to comment on this file and on colab notebook.
 
 Thanks for Reading me!!!
