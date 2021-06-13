@@ -8,21 +8,36 @@ Platform used - Google collab notebooks
 ## Data provided-
 
 Id-  Unique Id of each property
-name- Name of properties, which also describes the property
+
+name- Name of properties, which also describes the property 
+
 host_id- ID of the host, this is unique for all the hosts.
+
 host_name- Name of the host , Names may be similar for two hosts.
+
 neighbourhood_group-  have 5 different regions of New York
+
 neighbourhood-   these are the subregions of neighbourhood_group , where one neighbourhood belongs to only one neighbourhood group.
+
 Latitude-  contains the coordinates of Latitude for that location.
+
 Longitude-  contains the coordinates of longitude for that location
-room_type– there are three types of property available , 
+
+room_type– there are three types of property available.
+
 price-   price of stay (we have taken it for one night basis).
-minimum_nights-   this is the minimum number of nights for which you have to book a host’s place
+minimum_nights-   this is the minimum number of nights for which you have to book a host’s place.
+
 number_of_reviews-  This will be the number of reviews each property has got,we can also use this to infer about the number of customers considering the same customer behaviour across regions.
+
 last_review-  Date of last review that is posted for the property.
-reviews_per_month-   Number of reviews for each property per month
-calculated_host_listings_count-  Number of listing for each property
-availability_365-  Number of days each property is available out of 365 days of the year
+
+reviews_per_month-   Number of reviews for each property per month.
+
+calculated_host_listings_count-  Number of listing for each property.
+
+availability_365-  Number of days each property is available out of 365 days of the year.
+
 
 
 ### Assumptions-
